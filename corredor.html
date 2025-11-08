@@ -565,9 +565,16 @@
             const isOpen = dropdown.classList.contains('show');
             
             if (!isOpen) {
-                // Al abrir, copiar los filtros actuales a temp
+                // Al abrir, sincronizar checkboxes con los filtros activos
                 tempFilters = [...selectedFilters];
-                updateTempCheckboxes();
+                
+                // Actualizar todos los checkboxes según el estado actual
+                const allChecked = selectedFilters.length === 0;
+                document.getElementById('filter-all').checked = allChecked;
+                
+                ['restaurantes', 'hoteles', 'imperdibles', 'estacionamientos', 'estaciones_ecobici'].forEach(type => {
+                    document.getElementById(`filter-${type}`).checked = allChecked || selectedFilters.includes(type);
+                });
             }
             
             dropdown.classList.toggle('show');
@@ -621,6 +628,14 @@
             selectedFilters = [...tempFilters];
             updateSelectedFiltersDisplay();
             applyFilters();
+            
+            // Mantener el estado de los checkboxes para la próxima vez
+            const allChecked = selectedFilters.length === 0;
+            document.getElementById('filter-all').checked = allChecked;
+            ['restaurantes', 'hoteles', 'imperdibles', 'estacionamientos', 'estaciones_ecobici'].forEach(type => {
+                document.getElementById(`filter-${type}`).checked = allChecked || selectedFilters.includes(type);
+            });
+            
             toggleFilterDropdown();
         }
         
