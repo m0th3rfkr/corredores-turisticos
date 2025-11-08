@@ -91,32 +91,72 @@
             z-index: 1;
         }
 
-        /* Panel de Filtros */
+        /* Panel de Filtros Mejorado */
         .filter-panel {
             position: absolute;
             top: 85px;
             right: 15px;
             background: white;
             border-radius: 12px;
-            padding: 15px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             z-index: 500;
-            max-width: 200px;
+            width: 280px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-panel.collapsed {
+            width: auto;
+        }
+
+        .filter-panel.collapsed .filter-content {
+            display: none;
+        }
+
+        .filter-header {
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .filter-header:hover {
+            background: #e9ecef;
         }
 
         .filter-title {
             font-size: 14px;
             font-weight: 600;
             color: #333;
-            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-arrow {
+            transition: transform 0.3s;
+            font-size: 18px;
+        }
+
+        .filter-panel.collapsed .toggle-arrow {
+            transform: rotate(180deg);
+        }
+
+        .filter-content {
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .filter-option {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px;
-            margin-bottom: 5px;
+            gap: 10px;
+            padding: 10px;
+            margin-bottom: 8px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -138,26 +178,36 @@
             font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .filter-emoji {
-            font-size: 18px;
+            font-size: 20px;
+        }
+
+        .filter-text {
+            flex: 1;
         }
 
         .filter-count {
+            background: #CE1126;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
             font-size: 12px;
-            color: #999;
-            margin-left: auto;
+            font-weight: 600;
+            min-width: 24px;
+            text-align: center;
         }
 
-        /* Popup personalizado */
+        /* Popup mejorado */
         .leaflet-popup-content-wrapper {
             border-radius: 12px;
+            padding: 0;
         }
 
         .popup-content {
-            padding: 5px;
+            padding: 15px;
             min-width: 250px;
         }
 
@@ -165,48 +215,50 @@
             display: inline-block;
             background: #006847;
             color: white;
-            padding: 4px 8px;
+            padding: 4px 10px;
             border-radius: 6px;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .popup-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             color: #333;
-            margin-bottom: 5px;
-        }
-
-        .popup-description {
-            font-size: 13px;
-            color: #666;
-            line-height: 1.4;
             margin-bottom: 8px;
         }
 
-        .popup-address {
-            font-size: 12px;
-            color: #999;
+        .popup-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
             margin-bottom: 10px;
+        }
+
+        .popup-address {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 12px;
         }
 
         .popup-button {
             background: #006847;
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 13px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 14px;
             cursor: pointer;
             width: 100%;
             text-align: center;
             transition: all 0.2s ease;
+            font-weight: 500;
         }
 
         .popup-button:hover {
             background: #00854d;
+            transform: translateY(-1px);
         }
 
         /* Contador de lugares */
@@ -215,8 +267,8 @@
             bottom: 20px;
             left: 15px;
             background: white;
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 12px 18px;
+            border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.15);
             z-index: 500;
             font-size: 14px;
@@ -226,6 +278,7 @@
         .counter-number {
             color: #006847;
             font-weight: 700;
+            font-size: 16px;
         }
 
         /* Loading */
@@ -235,7 +288,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -261,19 +314,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Responsive */
-        @media (max-width: 600px) {
-            .filter-panel {
-                right: 10px;
-                left: 10px;
-                max-width: none;
-            }
-
-            .header-title h1 {
-                font-size: 18px;
-            }
-        }
-
         /* Botón de pantalla completa */
         .fullscreen-btn {
             position: absolute;
@@ -281,15 +321,30 @@
             left: 15px;
             background: white;
             padding: 10px;
-            border-radius: 8px;
+            border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.15);
             z-index: 500;
             cursor: pointer;
             font-size: 20px;
+            transition: all 0.2s;
         }
 
         .fullscreen-btn:hover {
             background: #f5f5f5;
+            transform: scale(1.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .filter-panel {
+                right: 10px;
+                left: 10px;
+                width: auto;
+            }
+
+            .header-title h1 {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
@@ -315,55 +370,63 @@
         ⛶
     </div>
 
-    <div class="filter-panel">
-        <div class="filter-title">Filtrar por categoría</div>
-        <div class="filter-option">
-            <input type="checkbox" id="filter-all" checked onchange="toggleAll(this)">
-            <label for="filter-all">
-                <span class="filter-emoji">🗺️</span>
-                <span>Mostrar todos</span>
-                <span class="filter-count" id="count-all">0</span>
-            </label>
+    <div class="filter-panel" id="filterPanel">
+        <div class="filter-header" onclick="toggleFilterPanel()">
+            <div class="filter-title">
+                <span>🎯</span>
+                <span>Filtrar por categoría</span>
+            </div>
+            <span class="toggle-arrow">▼</span>
         </div>
-        <div class="filter-option">
-            <input type="checkbox" id="filter-restaurantes" checked onchange="filterMarkers()">
-            <label for="filter-restaurantes">
-                <span class="filter-emoji">🍽️</span>
-                <span>Restaurantes</span>
-                <span class="filter-count" id="count-restaurantes">0</span>
-            </label>
-        </div>
-        <div class="filter-option">
-            <input type="checkbox" id="filter-hoteles" checked onchange="filterMarkers()">
-            <label for="filter-hoteles">
-                <span class="filter-emoji">🏨</span>
-                <span>Hoteles</span>
-                <span class="filter-count" id="count-hoteles">0</span>
-            </label>
-        </div>
-        <div class="filter-option">
-            <input type="checkbox" id="filter-imperdibles" checked onchange="filterMarkers()">
-            <label for="filter-imperdibles">
-                <span class="filter-emoji">⭐</span>
-                <span>Imperdibles</span>
-                <span class="filter-count" id="count-imperdibles">0</span>
-            </label>
-        </div>
-        <div class="filter-option">
-            <input type="checkbox" id="filter-estacionamientos" checked onchange="filterMarkers()">
-            <label for="filter-estacionamientos">
-                <span class="filter-emoji">🅿️</span>
-                <span>Parking</span>
-                <span class="filter-count" id="count-estacionamientos">0</span>
-            </label>
-        </div>
-        <div class="filter-option">
-            <input type="checkbox" id="filter-estaciones_ecobici" checked onchange="filterMarkers()">
-            <label for="filter-estaciones_ecobici">
-                <span class="filter-emoji">🚴</span>
-                <span>EcoBici</span>
-                <span class="filter-count" id="count-ecobici">0</span>
-            </label>
+        <div class="filter-content">
+            <div class="filter-option" onclick="toggleFilter('all')">
+                <input type="checkbox" id="filter-all" checked>
+                <label for="filter-all">
+                    <span class="filter-emoji">🗺️</span>
+                    <span class="filter-text">Mostrar todos</span>
+                    <span class="filter-count" id="count-all">0</span>
+                </label>
+            </div>
+            <div class="filter-option" onclick="toggleFilter('restaurantes')">
+                <input type="checkbox" id="filter-restaurantes" checked>
+                <label for="filter-restaurantes">
+                    <span class="filter-emoji">🍽️</span>
+                    <span class="filter-text">Restaurantes</span>
+                    <span class="filter-count" id="count-restaurantes">0</span>
+                </label>
+            </div>
+            <div class="filter-option" onclick="toggleFilter('hoteles')">
+                <input type="checkbox" id="filter-hoteles" checked>
+                <label for="filter-hoteles">
+                    <span class="filter-emoji">🏨</span>
+                    <span class="filter-text">Hoteles</span>
+                    <span class="filter-count" id="count-hoteles">0</span>
+                </label>
+            </div>
+            <div class="filter-option" onclick="toggleFilter('imperdibles')">
+                <input type="checkbox" id="filter-imperdibles" checked>
+                <label for="filter-imperdibles">
+                    <span class="filter-emoji">⭐</span>
+                    <span class="filter-text">Imperdibles</span>
+                    <span class="filter-count" id="count-imperdibles">0</span>
+                </label>
+            </div>
+            <div class="filter-option" onclick="toggleFilter('estacionamientos')">
+                <input type="checkbox" id="filter-estacionamientos" checked>
+                <label for="filter-estacionamientos">
+                    <span class="filter-emoji">🅿️</span>
+                    <span class="filter-text">Parking</span>
+                    <span class="filter-count" id="count-estacionamientos">0</span>
+                </label>
+            </div>
+            <div class="filter-option" onclick="toggleFilter('estaciones_ecobici')">
+                <input type="checkbox" id="filter-estaciones_ecobici" checked>
+                <label for="filter-estaciones_ecobici">
+                    <span class="filter-emoji">🚴</span>
+                    <span class="filter-text">EcoBici</span>
+                    <span class="filter-count" id="count-estaciones_ecobici">0</span>
+                </label>
+            </div>
         </div>
     </div>
 
@@ -532,7 +595,7 @@
             document.getElementById('count-hoteles').textContent = counts.hoteles || 0;
             document.getElementById('count-imperdibles').textContent = counts.imperdibles || 0;
             document.getElementById('count-estacionamientos').textContent = counts.estacionamientos || 0;
-            document.getElementById('count-ecobici').textContent = counts.estaciones_ecobici || 0;
+            document.getElementById('count-estaciones_ecobici').textContent = counts.estaciones_ecobici || 0;
             
             document.getElementById('total-count').textContent = allPlaces.length;
             document.getElementById('visible-count').textContent = allPlaces.length;
@@ -595,6 +658,34 @@
             });
         }
 
+        // Toggle panel de filtros
+        function toggleFilterPanel() {
+            const panel = document.getElementById('filterPanel');
+            panel.classList.toggle('collapsed');
+        }
+
+        // Toggle filtro
+        function toggleFilter(type) {
+            if (type === 'all') {
+                const allChecked = document.getElementById('filter-all').checked;
+                Object.keys(categoryConfig).forEach(cat => {
+                    document.getElementById(`filter-${cat}`).checked = !allChecked;
+                });
+                document.getElementById('filter-all').checked = !allChecked;
+            } else {
+                const checkbox = document.getElementById(`filter-${type}`);
+                checkbox.checked = !checkbox.checked;
+                
+                // Actualizar "todos"
+                const allChecked = Object.keys(categoryConfig).every(cat => 
+                    document.getElementById(`filter-${cat}`).checked
+                );
+                document.getElementById('filter-all').checked = allChecked;
+            }
+            
+            filterMarkers();
+        }
+
         // Filtrar marcadores
         function filterMarkers() {
             let visibleCount = 0;
@@ -609,26 +700,8 @@
                 }
             });
             
-            // Actualizar checkbox de "todos"
-            const allCheckbox = document.getElementById('filter-all');
-            const allChecked = Object.keys(categoryConfig).every(cat => 
-                document.getElementById(`filter-${cat}`).checked
-            );
-            allCheckbox.checked = allChecked;
-            
             // Actualizar contador
             document.getElementById('visible-count').textContent = visibleCount;
-        }
-
-        // Toggle todos
-        function toggleAll(checkbox) {
-            const isChecked = checkbox.checked;
-            
-            Object.keys(categoryConfig).forEach(cat => {
-                document.getElementById(`filter-${cat}`).checked = isChecked;
-            });
-            
-            filterMarkers();
         }
 
         // Abrir detalle del lugar
@@ -651,6 +724,13 @@
                 }
             }
         }
+
+        // Prevenir propagación de click en checkbox
+        document.querySelectorAll('.filter-option input').forEach(input => {
+            input.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        });
 
         // Inicializar
         document.addEventListener('DOMContentLoaded', () => {
