@@ -27,13 +27,14 @@
             font-size: 16px; 
         }
         
-        /* Nueva sección de filtros estilo multi-select */
+        /* Sección de filtros mejorada */
         .filter-section {
             background: white;
             margin: 10px;
             border-radius: 12px;
             padding: 15px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
         }
         
         .filter-header {
@@ -50,9 +51,10 @@
         }
         
         .filter-toggle {
-            background: #f0f0f0;
+            background: #006847;
+            color: white;
             border: none;
-            padding: 8px 12px;
+            padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
             display: flex;
@@ -63,19 +65,17 @@
         }
         
         .filter-toggle:hover {
-            background: #e0e0e0;
+            background: #00854d;
         }
         
         .filter-toggle.active {
-            background: #006847;
-            color: white;
+            background: #CE1126;
         }
         
         .selected-filters {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 15px;
             min-height: 40px;
             padding: 8px;
             background: #f8f9fa;
@@ -107,28 +107,35 @@
         .filter-dropdown {
             display: none;
             position: absolute;
+            top: 100%;
+            left: 10px;
+            right: 10px;
             background: white;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            z-index: 100;
-            width: calc(100% - 20px);
-            margin: 0 10px;
-            max-height: 300px;
-            overflow-y: auto;
+            z-index: 1000;
+            margin-top: 10px;
+            padding: 15px;
         }
         
         .filter-dropdown.show {
             display: block;
         }
         
+        .filter-options {
+            max-height: 250px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+        
         .filter-option {
-            padding: 12px 15px;
+            padding: 10px;
             display: flex;
             align-items: center;
             gap: 10px;
             cursor: pointer;
             transition: all 0.2s;
-            border-bottom: 1px solid #f0f0f0;
+            border-radius: 8px;
         }
         
         .filter-option:hover {
@@ -142,6 +149,16 @@
         .filter-option input[type="checkbox"] {
             width: 18px;
             height: 18px;
+            cursor: pointer;
+        }
+        
+        .filter-option label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .filter-option .emoji {
@@ -150,7 +167,6 @@
         
         .filter-option .text {
             flex: 1;
-            font-size: 14px;
         }
         
         .filter-option .count {
@@ -160,6 +176,44 @@
             border-radius: 12px;
             font-size: 12px;
             font-weight: 600;
+            min-width: 24px;
+            text-align: center;
+        }
+        
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .btn-apply, .btn-cancel {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-apply {
+            background: #006847;
+            color: white;
+        }
+        
+        .btn-apply:hover {
+            background: #00854d;
+        }
+        
+        .btn-cancel {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-cancel:hover {
+            background: #e0e0e0;
         }
         
         .feed { 
@@ -280,11 +334,11 @@
         <p id="corridorDesc"></p>
     </div>
     
-    <!-- Nueva sección de filtros estilo multi-select -->
+    <!-- Sección de filtros con botón aplicar -->
     <div class="filter-section">
         <div class="filter-header">
             <div class="filter-title">Filtrar por categoría</div>
-            <button class="filter-toggle" onclick="toggleFilterDropdown()">
+            <button class="filter-toggle" id="filterToggle" onclick="toggleFilterDropdown()">
                 <span>▼</span>
                 <span>Filtros</span>
             </button>
@@ -293,45 +347,63 @@
         <div class="selected-filters" id="selectedFilters">
             <span class="placeholder-text">Mostrando todos los lugares</span>
         </div>
-    </div>
-    
-    <!-- Dropdown de filtros (oculto por defecto) -->
-    <div class="filter-dropdown" id="filterDropdown">
-        <div class="filter-option" onclick="toggleFilter('all')">
-            <input type="checkbox" id="filter-all" checked>
-            <span class="emoji">🗺️</span>
-            <span class="text">Mostrar todos</span>
-            <span class="count" id="count-all">0</span>
-        </div>
-        <div class="filter-option" onclick="toggleFilter('restaurantes')">
-            <input type="checkbox" id="filter-restaurantes">
-            <span class="emoji">🍽️</span>
-            <span class="text">Restaurantes</span>
-            <span class="count" id="count-restaurantes">0</span>
-        </div>
-        <div class="filter-option" onclick="toggleFilter('hoteles')">
-            <input type="checkbox" id="filter-hoteles">
-            <span class="emoji">🏨</span>
-            <span class="text">Hoteles</span>
-            <span class="count" id="count-hoteles">0</span>
-        </div>
-        <div class="filter-option" onclick="toggleFilter('imperdibles')">
-            <input type="checkbox" id="filter-imperdibles">
-            <span class="emoji">⭐</span>
-            <span class="text">Imperdibles</span>
-            <span class="count" id="count-imperdibles">0</span>
-        </div>
-        <div class="filter-option" onclick="toggleFilter('estacionamientos')">
-            <input type="checkbox" id="filter-estacionamientos">
-            <span class="emoji">🅿️</span>
-            <span class="text">Estacionamientos</span>
-            <span class="count" id="count-estacionamientos">0</span>
-        </div>
-        <div class="filter-option" onclick="toggleFilter('estaciones_ecobici')">
-            <input type="checkbox" id="filter-estaciones_ecobici">
-            <span class="emoji">🚲</span>
-            <span class="text">EcoBici</span>
-            <span class="count" id="count-estaciones_ecobici">0</span>
+        
+        <!-- Dropdown mejorado -->
+        <div class="filter-dropdown" id="filterDropdown">
+            <div class="filter-options">
+                <div class="filter-option" onclick="toggleCheckbox('all')">
+                    <input type="checkbox" id="filter-all" checked onclick="event.stopPropagation()">
+                    <label for="filter-all" onclick="event.stopPropagation(); toggleCheckbox('all')">
+                        <span class="emoji">🗺️</span>
+                        <span class="text">Mostrar todos</span>
+                        <span class="count" id="count-all">0</span>
+                    </label>
+                </div>
+                <div class="filter-option" onclick="toggleCheckbox('restaurantes')">
+                    <input type="checkbox" id="filter-restaurantes" onclick="event.stopPropagation()">
+                    <label for="filter-restaurantes" onclick="event.stopPropagation(); toggleCheckbox('restaurantes')">
+                        <span class="emoji">🍽️</span>
+                        <span class="text">Restaurantes</span>
+                        <span class="count" id="count-restaurantes">0</span>
+                    </label>
+                </div>
+                <div class="filter-option" onclick="toggleCheckbox('hoteles')">
+                    <input type="checkbox" id="filter-hoteles" onclick="event.stopPropagation()">
+                    <label for="filter-hoteles" onclick="event.stopPropagation(); toggleCheckbox('hoteles')">
+                        <span class="emoji">🏨</span>
+                        <span class="text">Hoteles</span>
+                        <span class="count" id="count-hoteles">0</span>
+                    </label>
+                </div>
+                <div class="filter-option" onclick="toggleCheckbox('imperdibles')">
+                    <input type="checkbox" id="filter-imperdibles" onclick="event.stopPropagation()">
+                    <label for="filter-imperdibles" onclick="event.stopPropagation(); toggleCheckbox('imperdibles')">
+                        <span class="emoji">⭐</span>
+                        <span class="text">Imperdibles</span>
+                        <span class="count" id="count-imperdibles">0</span>
+                    </label>
+                </div>
+                <div class="filter-option" onclick="toggleCheckbox('estacionamientos')">
+                    <input type="checkbox" id="filter-estacionamientos" onclick="event.stopPropagation()">
+                    <label for="filter-estacionamientos" onclick="event.stopPropagation(); toggleCheckbox('estacionamientos')">
+                        <span class="emoji">🅿️</span>
+                        <span class="text">Estacionamientos</span>
+                        <span class="count" id="count-estacionamientos">0</span>
+                    </label>
+                </div>
+                <div class="filter-option" onclick="toggleCheckbox('estaciones_ecobici')">
+                    <input type="checkbox" id="filter-estaciones_ecobici" onclick="event.stopPropagation()">
+                    <label for="filter-estaciones_ecobici" onclick="event.stopPropagation(); toggleCheckbox('estaciones_ecobici')">
+                        <span class="emoji">🚲</span>
+                        <span class="text">EcoBici</span>
+                        <span class="count" id="count-estaciones_ecobici">0</span>
+                    </label>
+                </div>
+            </div>
+            <div class="filter-actions">
+                <button class="btn-cancel" onclick="cancelFilter()">Cancelar</button>
+                <button class="btn-apply" onclick="applyFilter()">Aplicar</button>
+            </div>
         </div>
     </div>
     
@@ -396,6 +468,7 @@
         const corredor = corredores[corridorSlug];
         let allPlaces = [];
         let selectedFilters = [];
+        let tempFilters = [];
         
         // Actualizar título
         document.getElementById('corridorName').innerHTML = corredor.icon + ' ' + corredor.nombre;
@@ -488,38 +561,72 @@
         
         function toggleFilterDropdown() {
             const dropdown = document.getElementById('filterDropdown');
-            const button = document.querySelector('.filter-toggle');
+            const button = document.getElementById('filterToggle');
+            const isOpen = dropdown.classList.contains('show');
+            
+            if (!isOpen) {
+                // Al abrir, copiar los filtros actuales a temp
+                tempFilters = [...selectedFilters];
+                updateTempCheckboxes();
+            }
+            
             dropdown.classList.toggle('show');
             button.classList.toggle('active');
         }
         
-        function toggleFilter(type) {
+        function toggleCheckbox(type) {
             if (type === 'all') {
-                // Si se selecciona "todos", desmarcar los demás
-                selectedFilters = [];
+                tempFilters = [];
                 document.querySelectorAll('.filter-option input').forEach(input => {
                     input.checked = input.id === 'filter-all';
                 });
             } else {
-                // Toggle del filtro específico
                 const checkbox = document.getElementById(`filter-${type}`);
                 checkbox.checked = !checkbox.checked;
                 
                 if (checkbox.checked) {
-                    selectedFilters.push(type);
+                    if (!tempFilters.includes(type)) {
+                        tempFilters.push(type);
+                    }
                     document.getElementById('filter-all').checked = false;
                 } else {
-                    selectedFilters = selectedFilters.filter(f => f !== type);
+                    tempFilters = tempFilters.filter(f => f !== type);
                 }
                 
-                // Si no hay filtros seleccionados, marcar "todos"
-                if (selectedFilters.length === 0) {
+                // Si no hay filtros, marcar "todos"
+                if (tempFilters.length === 0) {
                     document.getElementById('filter-all').checked = true;
+                } else {
+                    document.getElementById('filter-all').checked = false;
                 }
             }
+        }
+        
+        function updateTempCheckboxes() {
+            // Resetear todos
+            document.querySelectorAll('.filter-option input').forEach(input => {
+                input.checked = false;
+            });
             
+            if (tempFilters.length === 0) {
+                document.getElementById('filter-all').checked = true;
+            } else {
+                tempFilters.forEach(filter => {
+                    document.getElementById(`filter-${filter}`).checked = true;
+                });
+            }
+        }
+        
+        function applyFilter() {
+            selectedFilters = [...tempFilters];
             updateSelectedFiltersDisplay();
             applyFilters();
+            toggleFilterDropdown();
+        }
+        
+        function cancelFilter() {
+            tempFilters = [...selectedFilters];
+            toggleFilterDropdown();
         }
         
         function updateSelectedFiltersDisplay() {
@@ -546,7 +653,9 @@
         }
         
         function removeFilter(type) {
-            toggleFilter(type);
+            selectedFilters = selectedFilters.filter(f => f !== type);
+            updateSelectedFiltersDisplay();
+            applyFilters();
         }
         
         function applyFilters() {
@@ -572,8 +681,10 @@
         // Click fuera del dropdown para cerrarlo
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.filter-section')) {
-                document.getElementById('filterDropdown').classList.remove('show');
-                document.querySelector('.filter-toggle').classList.remove('active');
+                const dropdown = document.getElementById('filterDropdown');
+                if (dropdown.classList.contains('show')) {
+                    cancelFilter();
+                }
             }
         });
         
