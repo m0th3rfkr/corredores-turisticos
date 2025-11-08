@@ -352,7 +352,7 @@
         <div class="filter-dropdown" id="filterDropdown">
             <div class="filter-options">
                 <div class="filter-option" onclick="toggleCheckbox('all')">
-                    <input type="checkbox" id="filter-all" checked onclick="event.stopPropagation()">
+                    <input type="checkbox" id="filter-all" onclick="event.stopPropagation()">
                     <label for="filter-all" onclick="event.stopPropagation(); toggleCheckbox('all')">
                         <span class="emoji">🗺️</span>
                         <span class="text">Mostrar todos</span>
@@ -503,6 +503,7 @@
                 
                 updateCounters();
                 renderPlaces(allPlaces);
+                document.getElementById('filter-all').checked = true;
             } catch (error) {
                 console.error('Error:', error);
                 container.innerHTML = '<div class="error">Error al cargar lugares. Por favor recarga la página.</div>';
