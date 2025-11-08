@@ -583,6 +583,7 @@
         
         function toggleCheckbox(type) {
             if (type === 'all') {
+                // Si se selecciona "todos", limpiar filtros
                 tempFilters = [];
                 document.querySelectorAll('.filter-option input').forEach(input => {
                     input.checked = input.id === 'filter-all';
@@ -592,11 +593,13 @@
                 checkbox.checked = !checkbox.checked;
                 
                 if (checkbox.checked) {
+                    // Agregar a filtros temporales si no está
                     if (!tempFilters.includes(type)) {
                         tempFilters.push(type);
                     }
                     document.getElementById('filter-all').checked = false;
                 } else {
+                    // Quitar de filtros temporales
                     tempFilters = tempFilters.filter(f => f !== type);
                 }
                 
@@ -607,6 +610,7 @@
                     document.getElementById('filter-all').checked = false;
                 }
             }
+            console.log('Filtros temporales:', tempFilters); // Debug
         }
         
         function updateTempCheckboxes() {
@@ -625,17 +629,17 @@
         }
         
         function applyFilter() {
+            // Copiar filtros temporales a filtros activos
             selectedFilters = [...tempFilters];
+            console.log('Aplicando filtros:', selectedFilters); // Debug
+            
+            // Actualizar display de tags
             updateSelectedFiltersDisplay();
+            
+            // Aplicar los filtros a los lugares
             applyFilters();
             
-            // Mantener el estado de los checkboxes para la próxima vez
-            const allChecked = selectedFilters.length === 0;
-            document.getElementById('filter-all').checked = allChecked;
-            ['restaurantes', 'hoteles', 'imperdibles', 'estacionamientos', 'estaciones_ecobici'].forEach(type => {
-                document.getElementById(`filter-${type}`).checked = allChecked || selectedFilters.includes(type);
-            });
-            
+            // Cerrar el dropdown
             toggleFilterDropdown();
         }
         
@@ -679,8 +683,12 @@
                 filtered = allPlaces;
                 document.getElementById('feedTitle').textContent = 'Todos los lugares';
             } else {
-                filtered = allPlaces.filter(p => selectedFilters.includes(p.tipo));
-                document.getElementById('feedTitle').textContent = `Mostrando ${filtered.length} lugares`;
+                // Filtrar realmente por las categorías seleccionadas
+                filtered = allPlaces.filter(place => {
+                    return selectedFilters.includes(place.tipo);
+                });
+                const totalFiltered = filtered.length;
+                document.getElementById('feedTitle').textContent = `Mostrando ${totalFiltered} ${totalFiltered === 1 ? 'lugar' : 'lugares'}`;
             }
             renderPlaces(filtered);
         }
