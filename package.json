@@ -1,0 +1,22 @@
+{
+  "name": "wc26-goodbarber-app",
+  "version": "1.0.0",
+  "description": "7 Corredores Turísticos CDMX - App para GoodBarber",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve . -p 3000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/[tu-usuario]/wc26-goodbarber-app"
+  },
+  "keywords": [
+    "cdmx",
+    "turismo",
+    "worldcup",
+    "mexico"
+  ],
+  "author": "Tony M",
+  "license": "MIT"
+}
