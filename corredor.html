@@ -27,193 +27,68 @@
             font-size: 16px; 
         }
         
-        /* Sección de filtros mejorada */
+        /* Filtros simples */
         .filter-section {
             background: white;
             margin: 10px;
             border-radius: 12px;
             padding: 15px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        
-        .filter-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
         }
         
         .filter-title {
             font-size: 18px;
             font-weight: 600;
             color: #333;
-        }
-        
-        .filter-toggle {
-            background: #006847;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-        
-        .filter-toggle:hover {
-            background: #00854d;
-        }
-        
-        .filter-toggle.active {
-            background: #CE1126;
-        }
-        
-        .selected-filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            min-height: 40px;
-            padding: 8px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            align-items: center;
-        }
-        
-        .filter-tag {
-            background: #006847;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-        
-        .filter-tag .remove {
-            cursor: pointer;
-            font-weight: bold;
-            opacity: 0.8;
-        }
-        
-        .filter-tag .remove:hover {
-            opacity: 1;
-        }
-        
-        .filter-dropdown {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 10px;
-            right: 10px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            z-index: 1000;
-            margin-top: 10px;
-            padding: 15px;
-        }
-        
-        .filter-dropdown.show {
-            display: block;
-        }
-        
-        .filter-options {
-            max-height: 250px;
-            overflow-y: auto;
             margin-bottom: 15px;
         }
         
-        .filter-option {
-            padding: 10px;
-            display: flex;
-            align-items: center;
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
+        }
+        
+        .filter-btn {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
-        }
-        
-        .filter-option:hover {
-            background: #f8f9fa;
-        }
-        
-        .filter-option.selected {
-            background: #e8f5e9;
-        }
-        
-        .filter-option input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
+            background: white;
             cursor: pointer;
-        }
-        
-        .filter-option label {
-            flex: 1;
-            cursor: pointer;
-            font-size: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.2s;
+            font-size: 14px;
         }
         
-        .filter-option .emoji {
-            font-size: 20px;
+        .filter-btn:hover {
+            background: #f5f5f5;
         }
         
-        .filter-option .text {
-            flex: 1;
+        .filter-btn.active {
+            background: #006847;
+            color: white;
+            border-color: #006847;
         }
         
-        .filter-option .count {
+        .filter-btn .emoji {
+            font-size: 18px;
+        }
+        
+        .filter-btn .count {
+            margin-left: auto;
             background: #CE1126;
             color: white;
             padding: 2px 8px;
             border-radius: 12px;
             font-size: 12px;
             font-weight: 600;
-            min-width: 24px;
-            text-align: center;
         }
         
-        .filter-actions {
-            display: flex;
-            gap: 10px;
-            padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
-        }
-        
-        .btn-apply, .btn-cancel {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .btn-apply {
-            background: #006847;
-            color: white;
-        }
-        
-        .btn-apply:hover {
-            background: #00854d;
-        }
-        
-        .btn-cancel {
-            background: #f0f0f0;
-            color: #333;
-        }
-        
-        .btn-cancel:hover {
-            background: #e0e0e0;
+        .filter-btn.active .count {
+            background: white;
+            color: #006847;
         }
         
         .feed { 
@@ -318,11 +193,6 @@
             margin: 20px; 
         }
         
-        .placeholder-text {
-            color: #999;
-            font-size: 14px;
-        }
-        
         @media (max-width: 600px) {
             .hero-section h1 { font-size: 24px; }
         }
@@ -334,76 +204,40 @@
         <p id="corridorDesc"></p>
     </div>
     
-    <!-- Sección de filtros con botón aplicar -->
+    <!-- Filtros simplificados -->
     <div class="filter-section">
-        <div class="filter-header">
-            <div class="filter-title">Filtrar por categoría</div>
-            <button class="filter-toggle" id="filterToggle" onclick="toggleFilterDropdown()">
-                <span>▼</span>
-                <span>Filtros</span>
+        <div class="filter-title">Filtrar por categoría</div>
+        <div class="filter-grid">
+            <button class="filter-btn active" onclick="setFilter('all')">
+                <span class="emoji">🗺️</span>
+                <span>Todos</span>
+                <span class="count" id="count-all">0</span>
             </button>
-        </div>
-        
-        <div class="selected-filters" id="selectedFilters">
-            <span class="placeholder-text">Mostrando todos los lugares</span>
-        </div>
-        
-        <!-- Dropdown mejorado -->
-        <div class="filter-dropdown" id="filterDropdown">
-            <div class="filter-options">
-                <div class="filter-option" onclick="toggleCheckbox('all')">
-                    <input type="checkbox" id="filter-all" checked onclick="event.stopPropagation()">
-                    <label for="filter-all" onclick="event.stopPropagation(); toggleCheckbox('all')">
-                        <span class="emoji">🗺️</span>
-                        <span class="text">Mostrar todos</span>
-                        <span class="count" id="count-all">0</span>
-                    </label>
-                </div>
-                <div class="filter-option" onclick="toggleCheckbox('restaurantes')">
-                    <input type="checkbox" id="filter-restaurantes" onclick="event.stopPropagation()">
-                    <label for="filter-restaurantes" onclick="event.stopPropagation(); toggleCheckbox('restaurantes')">
-                        <span class="emoji">🍽️</span>
-                        <span class="text">Restaurantes</span>
-                        <span class="count" id="count-restaurantes">0</span>
-                    </label>
-                </div>
-                <div class="filter-option" onclick="toggleCheckbox('hoteles')">
-                    <input type="checkbox" id="filter-hoteles" onclick="event.stopPropagation()">
-                    <label for="filter-hoteles" onclick="event.stopPropagation(); toggleCheckbox('hoteles')">
-                        <span class="emoji">🏨</span>
-                        <span class="text">Hoteles</span>
-                        <span class="count" id="count-hoteles">0</span>
-                    </label>
-                </div>
-                <div class="filter-option" onclick="toggleCheckbox('imperdibles')">
-                    <input type="checkbox" id="filter-imperdibles" onclick="event.stopPropagation()">
-                    <label for="filter-imperdibles" onclick="event.stopPropagation(); toggleCheckbox('imperdibles')">
-                        <span class="emoji">⭐</span>
-                        <span class="text">Imperdibles</span>
-                        <span class="count" id="count-imperdibles">0</span>
-                    </label>
-                </div>
-                <div class="filter-option" onclick="toggleCheckbox('estacionamientos')">
-                    <input type="checkbox" id="filter-estacionamientos" onclick="event.stopPropagation()">
-                    <label for="filter-estacionamientos" onclick="event.stopPropagation(); toggleCheckbox('estacionamientos')">
-                        <span class="emoji">🅿️</span>
-                        <span class="text">Estacionamientos</span>
-                        <span class="count" id="count-estacionamientos">0</span>
-                    </label>
-                </div>
-                <div class="filter-option" onclick="toggleCheckbox('estaciones_ecobici')">
-                    <input type="checkbox" id="filter-estaciones_ecobici" onclick="event.stopPropagation()">
-                    <label for="filter-estaciones_ecobici" onclick="event.stopPropagation(); toggleCheckbox('estaciones_ecobici')">
-                        <span class="emoji">🚲</span>
-                        <span class="text">EcoBici</span>
-                        <span class="count" id="count-estaciones_ecobici">0</span>
-                    </label>
-                </div>
-            </div>
-            <div class="filter-actions">
-                <button class="btn-cancel" onclick="cancelFilter()">Cancelar</button>
-                <button class="btn-apply" onclick="applyFilter()">Aplicar</button>
-            </div>
+            <button class="filter-btn" onclick="setFilter('restaurantes')">
+                <span class="emoji">🍽️</span>
+                <span>Restaurantes</span>
+                <span class="count" id="count-restaurantes">0</span>
+            </button>
+            <button class="filter-btn" onclick="setFilter('hoteles')">
+                <span class="emoji">🏨</span>
+                <span>Hoteles</span>
+                <span class="count" id="count-hoteles">0</span>
+            </button>
+            <button class="filter-btn" onclick="setFilter('imperdibles')">
+                <span class="emoji">⭐</span>
+                <span>Imperdibles</span>
+                <span class="count" id="count-imperdibles">0</span>
+            </button>
+            <button class="filter-btn" onclick="setFilter('estacionamientos')">
+                <span class="emoji">🅿️</span>
+                <span>Parking</span>
+                <span class="count" id="count-estacionamientos">0</span>
+            </button>
+            <button class="filter-btn" onclick="setFilter('estaciones_ecobici')">
+                <span class="emoji">🚲</span>
+                <span>EcoBici</span>
+                <span class="count" id="count-estaciones_ecobici">0</span>
+            </button>
         </div>
     </div>
     
@@ -467,8 +301,7 @@
         const corridorSlug = params.get('corredor') || 'zona-rosa';
         const corredor = corredores[corridorSlug];
         let allPlaces = [];
-        let selectedFilters = [];
-        let tempFilters = [];
+        let currentFilter = 'all';
         
         // Actualizar título
         document.getElementById('corridorName').innerHTML = corredor.icon + ' ' + corredor.nombre;
@@ -559,137 +392,25 @@
             }).join('');
         }
         
-        function toggleFilterDropdown() {
-            const dropdown = document.getElementById('filterDropdown');
-            const button = document.getElementById('filterToggle');
-            const isOpen = dropdown.classList.contains('show');
+        function setFilter(type) {
+            currentFilter = type;
             
-            if (!isOpen) {
-                // Al abrir, sincronizar checkboxes con los filtros activos
-                tempFilters = [...selectedFilters];
-                
-                // Actualizar todos los checkboxes según el estado actual
-                const allChecked = selectedFilters.length === 0;
-                document.getElementById('filter-all').checked = allChecked;
-                
-                ['restaurantes', 'hoteles', 'imperdibles', 'estacionamientos', 'estaciones_ecobici'].forEach(type => {
-                    document.getElementById(`filter-${type}`).checked = allChecked || selectedFilters.includes(type);
-                });
-            }
-            
-            dropdown.classList.toggle('show');
-            button.classList.toggle('active');
-        }
-        
-        function toggleCheckbox(type) {
-            if (type === 'all') {
-                // Si se selecciona "todos", limpiar filtros
-                tempFilters = [];
-                document.querySelectorAll('.filter-option input').forEach(input => {
-                    input.checked = input.id === 'filter-all';
-                });
-            } else {
-                const checkbox = document.getElementById(`filter-${type}`);
-                checkbox.checked = !checkbox.checked;
-                
-                if (checkbox.checked) {
-                    // Agregar a filtros temporales si no está
-                    if (!tempFilters.includes(type)) {
-                        tempFilters.push(type);
-                    }
-                    document.getElementById('filter-all').checked = false;
-                } else {
-                    // Quitar de filtros temporales
-                    tempFilters = tempFilters.filter(f => f !== type);
-                }
-                
-                // Si no hay filtros, marcar "todos"
-                if (tempFilters.length === 0) {
-                    document.getElementById('filter-all').checked = true;
-                } else {
-                    document.getElementById('filter-all').checked = false;
-                }
-            }
-            console.log('Filtros temporales:', tempFilters); // Debug
-        }
-        
-        function updateTempCheckboxes() {
-            // Resetear todos
-            document.querySelectorAll('.filter-option input').forEach(input => {
-                input.checked = false;
+            // Actualizar botones activos
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
+            event.target.closest('.filter-btn').classList.add('active');
             
-            if (tempFilters.length === 0) {
-                document.getElementById('filter-all').checked = true;
-            } else {
-                tempFilters.forEach(filter => {
-                    document.getElementById(`filter-${filter}`).checked = true;
-                });
-            }
-        }
-        
-        function applyFilter() {
-            // Copiar filtros temporales a filtros activos
-            selectedFilters = [...tempFilters];
-            console.log('Aplicando filtros:', selectedFilters); // Debug
-            
-            // Actualizar display de tags
-            updateSelectedFiltersDisplay();
-            
-            // Aplicar los filtros a los lugares
-            applyFilters();
-            
-            // Cerrar el dropdown
-            toggleFilterDropdown();
-        }
-        
-        function cancelFilter() {
-            tempFilters = [...selectedFilters];
-            toggleFilterDropdown();
-        }
-        
-        function updateSelectedFiltersDisplay() {
-            const container = document.getElementById('selectedFilters');
-            const categoryInfo = {
-                'restaurantes': { emoji: '🍽️', name: 'Restaurantes' },
-                'hoteles': { emoji: '🏨', name: 'Hoteles' },
-                'imperdibles': { emoji: '⭐', name: 'Imperdibles' },
-                'estacionamientos': { emoji: '🅿️', name: 'Parking' },
-                'estaciones_ecobici': { emoji: '🚲', name: 'EcoBici' }
-            };
-            
-            if (selectedFilters.length === 0) {
-                container.innerHTML = '<span class="placeholder-text">Mostrando todos los lugares</span>';
-            } else {
-                container.innerHTML = selectedFilters.map(filter => {
-                    const info = categoryInfo[filter];
-                    return `<div class="filter-tag">
-                        <span>${info.emoji} ${info.name}</span>
-                        <span class="remove" onclick="removeFilter('${filter}')">×</span>
-                    </div>`;
-                }).join('');
-            }
-        }
-        
-        function removeFilter(type) {
-            selectedFilters = selectedFilters.filter(f => f !== type);
-            updateSelectedFiltersDisplay();
-            applyFilters();
-        }
-        
-        function applyFilters() {
+            // Filtrar lugares
             let filtered;
-            if (selectedFilters.length === 0) {
+            if (type === 'all') {
                 filtered = allPlaces;
                 document.getElementById('feedTitle').textContent = 'Todos los lugares';
             } else {
-                // Filtrar realmente por las categorías seleccionadas
-                filtered = allPlaces.filter(place => {
-                    return selectedFilters.includes(place.tipo);
-                });
-                const totalFiltered = filtered.length;
-                document.getElementById('feedTitle').textContent = `Mostrando ${totalFiltered} ${totalFiltered === 1 ? 'lugar' : 'lugares'}`;
+                filtered = allPlaces.filter(place => place.tipo === type);
+                document.getElementById('feedTitle').textContent = `Mostrando ${filtered.length} ${filtered.length === 1 ? 'lugar' : 'lugares'}`;
             }
+            
             renderPlaces(filtered);
         }
         
@@ -700,16 +421,6 @@
         function openMap() {
             window.location.href = `mapa.html?corredor=${corridorSlug}`;
         }
-        
-        // Click fuera del dropdown para cerrarlo
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.filter-section')) {
-                const dropdown = document.getElementById('filterDropdown');
-                if (dropdown.classList.contains('show')) {
-                    cancelFilter();
-                }
-            }
-        });
         
         loadPlaces();
     </script>
