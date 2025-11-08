@@ -17,6 +17,7 @@
             color: white; 
             padding: 30px 20px; 
             text-align: center;
+            position: relative;
         }
         .hero-section h1 { 
             font-size: 32px; 
@@ -25,6 +26,28 @@
         .hero-section p { 
             opacity: 0.9; 
             font-size: 16px; 
+        }
+        
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
         }
         
         /* Filtros simples */
@@ -200,6 +223,10 @@
 </head>
 <body>
     <div class="hero-section">
+        <button class="back-btn" onclick="goBack()">
+            <span>←</span>
+            <span>Volver</span>
+        </button>
         <h1 id="corridorName">Cargando...</h1>
         <p id="corridorDesc"></p>
     </div>
@@ -420,6 +447,10 @@
         
         function openMap() {
             window.location.href = `mapa.html?corredor=${corridorSlug}`;
+        }
+        
+        function goBack() {
+            window.location.href = 'index.html';
         }
         
         loadPlaces();
