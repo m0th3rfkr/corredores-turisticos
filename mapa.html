@@ -150,6 +150,45 @@
             max-height: 400px;
             overflow-y: auto;
         }
+        
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            padding: 12px 15px;
+            border-top: 1px solid #e0e0e0;
+            background: #f8f9fa;
+            border-radius: 0 0 12px 12px;
+        }
+        
+        .btn-apply, .btn-cancel {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-apply {
+            background: #006847;
+            color: white;
+        }
+        
+        .btn-apply:hover {
+            background: #00854d;
+        }
+        
+        .btn-cancel {
+            background: white;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        
+        .btn-cancel:hover {
+            background: #f0f0f0;
+        }
 
         .filter-option {
             display: flex;
@@ -428,6 +467,10 @@
                 </label>
             </div>
         </div>
+        <div class="filter-actions">
+            <button class="btn-cancel" onclick="cancelFilter()">Cancelar</button>
+            <button class="btn-apply" onclick="applyFilter()">Aplicar</button>
+        </div>
     </div>
 
     <div class="place-counter">
@@ -510,6 +553,8 @@
         let allMarkers = [];
         let markerGroups = {};
         let allPlaces = [];
+        let tempFilters = {}; // Estado temporal de filtros
+        let activeFilters = {}; // Estado activo de filtros
         const params = new URLSearchParams(window.location.search);
         const corridorSlug = params.get('corredor') || 'zona-rosa';
         const corredor = corredores[corridorSlug];
@@ -661,29 +706,56 @@
         // Toggle panel de filtros
         function toggleFilterPanel() {
             const panel = document.getElementById('filterPanel');
+            const isCollapsed = panel.classList.contains('collapsed');
+            
+            if (isCollapsed) {
+                // Al abrir, copiar estado actual a temporal
+                Object.keys(categoryConfig).forEach(cat => {
+                    tempFilters[cat] = activeFilters[cat] !== false;
+                    document.getElementById(`filter-${cat}`).checked = tempFilters[cat];
+                });
+                updateAllCheckbox();
+            }
+            
             panel.classList.toggle('collapsed');
         }
 
-        // Toggle filtro
+        // Toggle filtro individual (sin aplicar inmediatamente)
         function toggleFilter(type) {
             if (type === 'all') {
-                const allChecked = document.getElementById('filter-all').checked;
+                const newState = !document.getElementById('filter-all').checked;
+                document.getElementById('filter-all').checked = newState;
                 Object.keys(categoryConfig).forEach(cat => {
-                    document.getElementById(`filter-${cat}`).checked = !allChecked;
+                    tempFilters[cat] = newState;
+                    document.getElementById(`filter-${cat}`).checked = newState;
                 });
-                document.getElementById('filter-all').checked = !allChecked;
             } else {
                 const checkbox = document.getElementById(`filter-${type}`);
                 checkbox.checked = !checkbox.checked;
-                
-                // Actualizar "todos"
-                const allChecked = Object.keys(categoryConfig).every(cat => 
-                    document.getElementById(`filter-${cat}`).checked
-                );
-                document.getElementById('filter-all').checked = allChecked;
+                tempFilters[type] = checkbox.checked;
+                updateAllCheckbox();
             }
-            
+        }
+        
+        // Actualizar checkbox "todos"
+        function updateAllCheckbox() {
+            const allChecked = Object.keys(categoryConfig).every(cat => 
+                document.getElementById(`filter-${cat}`).checked
+            );
+            document.getElementById('filter-all').checked = allChecked;
+        }
+
+        // Aplicar filtros
+        function applyFilter() {
+            activeFilters = {...tempFilters};
             filterMarkers();
+            toggleFilterPanel();
+        }
+        
+        // Cancelar cambios
+        function cancelFilter() {
+            tempFilters = {...activeFilters};
+            toggleFilterPanel();
         }
 
         // Filtrar marcadores
@@ -691,8 +763,7 @@
             let visibleCount = 0;
             
             Object.keys(categoryConfig).forEach(cat => {
-                const checkbox = document.getElementById(`filter-${cat}`);
-                if (checkbox && checkbox.checked) {
+                if (activeFilters[cat] !== false) {
                     map.addLayer(markerGroups[cat]);
                     visibleCount += allPlaces.filter(p => p.tipo === cat).length;
                 } else {
@@ -734,6 +805,12 @@
 
         // Inicializar
         document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar todos los filtros como activos
+            Object.keys(categoryConfig).forEach(cat => {
+                activeFilters[cat] = true;
+                tempFilters[cat] = true;
+            });
+            
             initMap();
             loadPlaces();
         });
