@@ -79,7 +79,7 @@
             background-repeat: no-repeat;
         }
 
-        /* Overlay verde con opacidad */
+        /* Overlay verde con opacidad reducida */
         .corredor-header::before {
             content: '';
             position: absolute;
@@ -87,7 +87,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(0, 104, 71, 0.85) 0%, rgba(0, 133, 77, 0.85) 100%);
+            background: linear-gradient(135deg, rgba(0, 104, 71, 0.65) 0%, rgba(0, 133, 77, 0.65) 100%);
             z-index: 1;
         }
 
@@ -98,21 +98,16 @@
             color: white;
         }
 
-        .corredor-header .icon {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-
         .corredor-header h2 {
-            font-size: 22px;
-            margin-top: 10px;
+            font-size: 28px;
+            font-weight: 700;
             color: white;
+            margin-bottom: 8px;
         }
 
         .corredor-header .desc {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-top: 5px;
+            font-size: 15px;
+            opacity: 0.95;
             color: white;
         }
 
@@ -137,49 +132,42 @@
             { 
                 id: 'zona-rosa', 
                 nombre: 'Zona Rosa', 
-                icon: '🌹', 
                 desc: 'Cultura y entretenimiento',
                 imagen: 'zona-rosa.jpg'
             },
             { 
                 id: 'basilica', 
                 nombre: 'Basílica', 
-                icon: '⛪', 
                 desc: 'Fe y tradición',
                 imagen: 'basilica.jpg'
             },
             { 
                 id: 'centro-historico', 
                 nombre: 'Centro Histórico', 
-                icon: '🏛️', 
                 desc: 'Corazón de CDMX',
                 imagen: 'centro-historico.jpg'
             },
             { 
                 id: 'chapultepec', 
                 nombre: 'Chapultepec', 
-                icon: '🌳', 
                 desc: 'Pulmón verde',
                 imagen: 'chapultepec.jpg'
             },
             { 
                 id: 'coyoacan', 
                 nombre: 'Coyoacán', 
-                icon: '🎨', 
                 desc: 'Arte y bohemia',
                 imagen: 'coyoacan.jpg'
             },
             { 
                 id: 'garibaldi', 
                 nombre: 'Garibaldi', 
-                icon: '🎺', 
                 desc: 'Mariachi',
                 imagen: 'garibaldi.jpg'
             },
             { 
                 id: 'xochimilco', 
                 nombre: 'Xochimilco', 
-                icon: '🚣', 
                 desc: 'Trajineras',
                 imagen: 'xochimilco.png'
             }
@@ -196,7 +184,6 @@
             
             card.innerHTML = `
                 <div class="corredor-header" style="background-image: url('${imageUrl}');">
-                    <div class="icon">${corredor.icon}</div>
                     <h2>${corredor.nombre}</h2>
                     <p class="desc">${corredor.desc}</p>
                 </div>
