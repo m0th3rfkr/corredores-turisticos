@@ -15,7 +15,7 @@
         .hero-section { 
             background: linear-gradient(135deg, #006847 0%, #00854d 100%); 
             color: white; 
-            padding: 30px 20px; 
+            padding: 60px 20px 30px 20px; 
             text-align: center;
             position: relative;
         }
@@ -442,15 +442,15 @@
         }
         
         function openPlace(id, tipo) {
-            window.location.href = `place.html?tipo=${tipo}&id=${id}&corredor=${corridorSlug}`;
+            window.location.href = `goodbarber-place-detail.html?tipo=${tipo}&id=${id}&corredor=${corridorSlug}`;
         }
         
         function openMap() {
-            window.location.href = `mapa.html?corredor=${corridorSlug}`;
+            window.location.href = `goodbarber-map.html?corredor=${corridorSlug}`;
         }
         
         function goBack() {
-            window.location.href = 'index.html';
+            window.location.href = 'goodbarber-7-rutas-widget-v2.html';
         }
         
         loadPlaces();
