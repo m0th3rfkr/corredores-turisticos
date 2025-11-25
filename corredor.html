@@ -50,20 +50,69 @@
             transform: translateX(-3px);
         }
         
-        /* Filtros simples */
+        /* Filtros con toggle */
         .filter-section {
             background: white;
             margin: 10px;
             border-radius: 12px;
-            padding: 15px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .filter-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        
+        .filter-header:hover {
+            background: #f9f9f9;
         }
         
         .filter-title {
             font-size: 18px;
             font-weight: 600;
             color: #333;
-            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-toggle {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-toggle svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+        
+        .filter-section.collapsed .filter-toggle svg {
+            transform: rotate(-90deg);
+        }
+        
+        .filter-content {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 15px 15px 15px;
+        }
+        
+        .filter-section.collapsed .filter-content {
+            max-height: 0;
+            padding: 0 15px;
         }
         
         .filter-grid {
@@ -112,6 +161,23 @@
         .filter-btn.active .count {
             background: white;
             color: #006847;
+        }
+        
+        /* Badge del filtro activo en el header cuando está colapsado */
+        .active-filter-badge {
+            display: none;
+            background: #006847;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .filter-section.collapsed .active-filter-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
         
         .feed { 
@@ -231,40 +297,52 @@
         <p id="corridorDesc"></p>
     </div>
     
-    <!-- Filtros simplificados -->
-    <div class="filter-section">
-        <div class="filter-title">Filtrar por categoría</div>
-        <div class="filter-grid">
-            <button class="filter-btn active" onclick="setFilter('all')">
-                <span class="emoji">🗺️</span>
-                <span>Todos</span>
-                <span class="count" id="count-all">0</span>
-            </button>
-            <button class="filter-btn" onclick="setFilter('restaurantes')">
-                <span class="emoji">🍽️</span>
-                <span>Restaurantes</span>
-                <span class="count" id="count-restaurantes">0</span>
-            </button>
-            <button class="filter-btn" onclick="setFilter('hoteles')">
-                <span class="emoji">🏨</span>
-                <span>Hoteles</span>
-                <span class="count" id="count-hoteles">0</span>
-            </button>
-            <button class="filter-btn" onclick="setFilter('imperdibles')">
-                <span class="emoji">⭐</span>
-                <span>Imperdibles</span>
-                <span class="count" id="count-imperdibles">0</span>
-            </button>
-            <button class="filter-btn" onclick="setFilter('estacionamientos')">
-                <span class="emoji">🅿️</span>
-                <span>Parking</span>
-                <span class="count" id="count-estacionamientos">0</span>
-            </button>
-            <button class="filter-btn" onclick="setFilter('estaciones_ecobici')">
-                <span class="emoji">🚲</span>
-                <span>EcoBici</span>
-                <span class="count" id="count-estaciones_ecobici">0</span>
-            </button>
+    <!-- Filtros con toggle colapsable -->
+    <div class="filter-section" id="filterSection">
+        <div class="filter-header" onclick="toggleFilters()">
+            <div class="filter-title">
+                Filtrar por categoría
+                <span class="active-filter-badge" id="activeFilterBadge">🗺️ Todos</span>
+            </div>
+            <div class="filter-toggle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+        </div>
+        <div class="filter-content">
+            <div class="filter-grid">
+                <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">
+                    <span class="emoji">🗺️</span>
+                    <span>Todos</span>
+                    <span class="count" id="count-all">0</span>
+                </button>
+                <button class="filter-btn" data-filter="restaurantes" onclick="setFilter('restaurantes', this)">
+                    <span class="emoji">🍽️</span>
+                    <span>Restaurantes</span>
+                    <span class="count" id="count-restaurantes">0</span>
+                </button>
+                <button class="filter-btn" data-filter="hoteles" onclick="setFilter('hoteles', this)">
+                    <span class="emoji">🏨</span>
+                    <span>Hoteles</span>
+                    <span class="count" id="count-hoteles">0</span>
+                </button>
+                <button class="filter-btn" data-filter="imperdibles" onclick="setFilter('imperdibles', this)">
+                    <span class="emoji">⭐</span>
+                    <span>Imperdibles</span>
+                    <span class="count" id="count-imperdibles">0</span>
+                </button>
+                <button class="filter-btn" data-filter="estacionamientos" onclick="setFilter('estacionamientos', this)">
+                    <span class="emoji">🅿️</span>
+                    <span>Parking</span>
+                    <span class="count" id="count-estacionamientos">0</span>
+                </button>
+                <button class="filter-btn" data-filter="estaciones_ecobici" onclick="setFilter('estaciones_ecobici', this)">
+                    <span class="emoji">🚲</span>
+                    <span>EcoBici</span>
+                    <span class="count" id="count-estaciones_ecobici">0</span>
+                </button>
+            </div>
         </div>
     </div>
     
@@ -324,6 +402,15 @@
             }
         };
         
+        const filterLabels = {
+            'all': '🗺️ Todos',
+            'restaurantes': '🍽️ Restaurantes',
+            'hoteles': '🏨 Hoteles',
+            'imperdibles': '⭐ Imperdibles',
+            'estacionamientos': '🅿️ Parking',
+            'estaciones_ecobici': '🚲 EcoBici'
+        };
+        
         const params = new URLSearchParams(window.location.search);
         const corridorSlug = params.get('corredor') || 'zona-rosa';
         const corredor = corredores[corridorSlug];
@@ -333,6 +420,23 @@
         // Actualizar título
         document.getElementById('corridorName').innerHTML = corredor.icon + ' ' + corredor.nombre;
         document.getElementById('corridorDesc').textContent = corredor.desc;
+        
+        // Toggle filtros
+        function toggleFilters() {
+            const section = document.getElementById('filterSection');
+            section.classList.toggle('collapsed');
+            
+            // Guardar estado en localStorage
+            localStorage.setItem('filtersCollapsed', section.classList.contains('collapsed'));
+        }
+        
+        // Restaurar estado de filtros
+        function restoreFilterState() {
+            const collapsed = localStorage.getItem('filtersCollapsed') === 'true';
+            if (collapsed) {
+                document.getElementById('filterSection').classList.add('collapsed');
+            }
+        }
         
         async function loadPlaces() {
             const container = document.getElementById('placesList');
@@ -419,14 +523,17 @@
             }).join('');
         }
         
-        function setFilter(type) {
+        function setFilter(type, btnElement) {
             currentFilter = type;
             
             // Actualizar botones activos
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            event.target.closest('.filter-btn').classList.add('active');
+            btnElement.classList.add('active');
+            
+            // Actualizar badge del filtro activo
+            document.getElementById('activeFilterBadge').textContent = filterLabels[type];
             
             // Filtrar lugares
             let filtered;
@@ -453,6 +560,8 @@
             window.location.href = 'index.html';
         }
         
+        // Inicializar
+        restoreFilterState();
         loadPlaces();
     </script>
 </body>
