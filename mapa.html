@@ -16,14 +16,12 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             height: 100vh;
             overflow: hidden;
             position: relative;
         }
-
         /* Header */
         .header {
             background: linear-gradient(135deg, #006847 0%, #00854d 100%);
@@ -36,7 +34,6 @@
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
-
         .header-content {
             max-width: 1200px;
             margin: 0 auto;
@@ -44,13 +41,11 @@
             align-items: center;
             justify-content: space-between;
         }
-
         .header-left {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-
         .back-button {
             background: rgba(255, 255, 255, 0.2);
             border: 2px solid white;
@@ -65,22 +60,18 @@
             transition: all 0.3s ease;
             text-decoration: none;
         }
-
         .back-button:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: translateX(-2px);
         }
-
         .header-title h1 {
             font-size: 20px;
             font-weight: 600;
         }
-
         .header-subtitle {
             font-size: 12px;
             opacity: 0.9;
         }
-
         /* Mapa */
         #map {
             position: absolute;
@@ -90,7 +81,6 @@
             right: 0;
             z-index: 1;
         }
-
         /* Panel de Filtros Mejorado */
         .filter-panel {
             position: absolute;
@@ -103,15 +93,16 @@
             width: 280px;
             transition: all 0.3s ease;
         }
-
         .filter-panel.collapsed {
             width: auto;
         }
-
-        .filter-panel.collapsed .filter-content {
+        .filter-panel.collapsed .filter-content,
+        .filter-panel.collapsed .filter-actions {
             display: none;
         }
-
+        .filter-panel.collapsed .filter-header {
+            border-radius: 12px;
+        }
         .filter-header {
             padding: 12px 15px;
             background: #f8f9fa;
@@ -122,11 +113,9 @@
             cursor: pointer;
             user-select: none;
         }
-
         .filter-header:hover {
             background: #e9ecef;
         }
-
         .filter-title {
             font-size: 14px;
             font-weight: 600;
@@ -135,16 +124,13 @@
             align-items: center;
             gap: 8px;
         }
-
         .toggle-arrow {
             transition: transform 0.3s;
             font-size: 18px;
         }
-
         .filter-panel.collapsed .toggle-arrow {
             transform: rotate(180deg);
         }
-
         .filter-content {
             padding: 15px;
             max-height: 400px;
@@ -189,7 +175,6 @@
         .btn-cancel:hover {
             background: #f0f0f0;
         }
-
         .filter-option {
             display: flex;
             align-items: center;
@@ -200,17 +185,15 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-
         .filter-option:hover {
             background: #f5f5f5;
         }
-
         .filter-option input[type="checkbox"] {
             width: 18px;
             height: 18px;
             cursor: pointer;
+            accent-color: #006847;
         }
-
         .filter-option label {
             flex: 1;
             cursor: pointer;
@@ -219,15 +202,12 @@
             align-items: center;
             gap: 8px;
         }
-
         .filter-emoji {
             font-size: 20px;
         }
-
         .filter-text {
             flex: 1;
         }
-
         .filter-count {
             background: #CE1126;
             color: white;
@@ -238,18 +218,15 @@
             min-width: 24px;
             text-align: center;
         }
-
         /* Popup mejorado */
         .leaflet-popup-content-wrapper {
             border-radius: 12px;
             padding: 0;
         }
-
         .popup-content {
             padding: 15px;
             min-width: 250px;
         }
-
         .popup-category {
             display: inline-block;
             background: #006847;
@@ -260,27 +237,23 @@
             font-weight: 600;
             margin-bottom: 10px;
         }
-
         .popup-title {
             font-size: 18px;
             font-weight: 700;
             color: #333;
             margin-bottom: 8px;
         }
-
         .popup-description {
             font-size: 14px;
             color: #666;
             line-height: 1.4;
             margin-bottom: 10px;
         }
-
         .popup-address {
             font-size: 13px;
             color: #999;
             margin-bottom: 12px;
         }
-
         .popup-button {
             background: #006847;
             color: white;
@@ -294,12 +267,10 @@
             transition: all 0.2s ease;
             font-weight: 500;
         }
-
         .popup-button:hover {
             background: #00854d;
             transform: translateY(-1px);
         }
-
         /* Contador de lugares */
         .place-counter {
             position: absolute;
@@ -313,13 +284,11 @@
             font-size: 14px;
             font-weight: 500;
         }
-
         .counter-number {
             color: #006847;
             font-weight: 700;
             font-size: 16px;
         }
-
         /* Loading */
         .loading-overlay {
             position: absolute;
@@ -333,11 +302,9 @@
             justify-content: center;
             z-index: 2000;
         }
-
         .loading-content {
             text-align: center;
         }
-
         .loading-spinner {
             width: 40px;
             height: 40px;
@@ -347,12 +314,10 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         /* Botón de pantalla completa */
         .fullscreen-btn {
             position: absolute;
@@ -367,12 +332,10 @@
             font-size: 20px;
             transition: all 0.2s;
         }
-
         .fullscreen-btn:hover {
             background: #f5f5f5;
             transform: scale(1.1);
         }
-
         /* Responsive */
         @media (max-width: 600px) {
             .filter-panel {
@@ -380,7 +343,6 @@
                 left: 10px;
                 width: auto;
             }
-
             .header-title h1 {
                 font-size: 18px;
             }
@@ -402,13 +364,10 @@
             </div>
         </div>
     </div>
-
     <div id="map"></div>
-
     <div class="fullscreen-btn" onclick="toggleFullscreen()" title="Pantalla completa">
         ⛶
     </div>
-
     <div class="filter-panel" id="filterPanel">
         <div class="filter-header" onclick="toggleFilterPanel()">
             <div class="filter-title">
@@ -418,48 +377,48 @@
             <span class="toggle-arrow">▼</span>
         </div>
         <div class="filter-content">
-            <div class="filter-option" onclick="toggleFilter('all')">
-                <input type="checkbox" id="filter-all" checked>
+            <div class="filter-option">
+                <input type="checkbox" id="filter-all" checked onchange="toggleFilterAll()">
                 <label for="filter-all">
                     <span class="filter-emoji">🗺️</span>
                     <span class="filter-text">Mostrar todos</span>
                     <span class="filter-count" id="count-all">0</span>
                 </label>
             </div>
-            <div class="filter-option" onclick="toggleFilter('restaurantes')">
-                <input type="checkbox" id="filter-restaurantes" checked>
+            <div class="filter-option">
+                <input type="checkbox" id="filter-restaurantes" checked onchange="updateTempFilter('restaurantes')">
                 <label for="filter-restaurantes">
                     <span class="filter-emoji">🍽️</span>
                     <span class="filter-text">Restaurantes</span>
                     <span class="filter-count" id="count-restaurantes">0</span>
                 </label>
             </div>
-            <div class="filter-option" onclick="toggleFilter('hoteles')">
-                <input type="checkbox" id="filter-hoteles" checked>
+            <div class="filter-option">
+                <input type="checkbox" id="filter-hoteles" checked onchange="updateTempFilter('hoteles')">
                 <label for="filter-hoteles">
                     <span class="filter-emoji">🏨</span>
                     <span class="filter-text">Hoteles</span>
                     <span class="filter-count" id="count-hoteles">0</span>
                 </label>
             </div>
-            <div class="filter-option" onclick="toggleFilter('imperdibles')">
-                <input type="checkbox" id="filter-imperdibles" checked>
+            <div class="filter-option">
+                <input type="checkbox" id="filter-imperdibles" checked onchange="updateTempFilter('imperdibles')">
                 <label for="filter-imperdibles">
                     <span class="filter-emoji">⭐</span>
                     <span class="filter-text">Imperdibles</span>
                     <span class="filter-count" id="count-imperdibles">0</span>
                 </label>
             </div>
-            <div class="filter-option" onclick="toggleFilter('estacionamientos')">
-                <input type="checkbox" id="filter-estacionamientos" checked>
+            <div class="filter-option">
+                <input type="checkbox" id="filter-estacionamientos" checked onchange="updateTempFilter('estacionamientos')">
                 <label for="filter-estacionamientos">
                     <span class="filter-emoji">🅿️</span>
                     <span class="filter-text">Parking</span>
                     <span class="filter-count" id="count-estacionamientos">0</span>
                 </label>
             </div>
-            <div class="filter-option" onclick="toggleFilter('estaciones_ecobici')">
-                <input type="checkbox" id="filter-estaciones_ecobici" checked>
+            <div class="filter-option">
+                <input type="checkbox" id="filter-estaciones_ecobici" checked onchange="updateTempFilter('estaciones_ecobici')">
                 <label for="filter-estaciones_ecobici">
                     <span class="filter-emoji">🚴</span>
                     <span class="filter-text">EcoBici</span>
@@ -472,27 +431,23 @@
             <button class="btn-apply" onclick="applyFilter()">Aplicar</button>
         </div>
     </div>
-
     <div class="place-counter">
         Mostrando <span class="counter-number" id="visible-count">0</span> de <span class="counter-number" id="total-count">0</span> lugares
     </div>
-
     <div class="loading-overlay" id="loading">
         <div class="loading-content">
             <div class="loading-spinner"></div>
             <p>Cargando mapa...</p>
         </div>
     </div>
-
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
-
     <script>
         // Configuración de Supabase
         const SUPABASE_URL = 'https://ksiiidnvtktlowlhtebs.supabase.co';
         const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzaWlpZG52dGt0bG93bGh0ZWJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4MTIxMzMsImV4cCI6MjA3NjM4ODEzM30.aNctRZSRaINDV4ehb00848g4Y-70UeFviNbsmS8jQUw';
-
+        
         // Mapeo de corredores
         const corredores = {
             'zona-rosa': { 
@@ -538,7 +493,7 @@
                 zoom: 14
             }
         };
-
+        
         // Configuración de categorías
         const categoryConfig = {
             'restaurantes': { emoji: '🍽️', name: 'Restaurante', color: '#FF6B6B' },
@@ -547,92 +502,90 @@
             'estacionamientos': { emoji: '🅿️', name: 'Estacionamiento', color: '#95E1D3' },
             'estaciones_ecobici': { emoji: '🚴', name: 'EcoBici', color: '#A8E6CF' }
         };
-
+        
         // Variables globales
         let map = null;
         let allMarkers = [];
         let markerGroups = {};
         let allPlaces = [];
-        let tempFilters = {}; // Estado temporal de filtros
-        let activeFilters = {}; // Estado activo de filtros
+        let tempFilters = {};
+        let activeFilters = {};
+        
         const params = new URLSearchParams(window.location.search);
         const corridorSlug = params.get('corredor') || 'zona-rosa';
         const corredor = corredores[corridorSlug];
-
+        
         // Actualizar título
-        document.getElementById('headerTitle').textContent = `Mapa de ${corredor.nombre}`;
-
+        document.getElementById('headerTitle').textContent = 'Mapa de ' + corredor.nombre;
+        
         // Inicializar mapa
         function initMap() {
             map = L.map('map').setView(corredor.center, corredor.zoom);
-
-            // Agregar tiles
+            
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors',
                 maxZoom: 19
             }).addTo(map);
-
+            
             // Crear grupos de marcadores por categoría
-            Object.keys(categoryConfig).forEach(cat => {
+            Object.keys(categoryConfig).forEach(function(cat) {
                 markerGroups[cat] = L.layerGroup().addTo(map);
             });
         }
-
+        
         // Cargar datos
         async function loadPlaces() {
             try {
                 const tables = Object.keys(categoryConfig);
                 
-                const promises = tables.map(async tableName => {
-                    const url = `${SUPABASE_URL}/rest/v1/${tableName}?corredor_id=eq.${corredor.id}&select=*`;
+                const promises = tables.map(async function(tableName) {
+                    const url = SUPABASE_URL + '/rest/v1/' + tableName + '?corredor_id=eq.' + corredor.id + '&select=*';
                     const response = await fetch(url, {
                         headers: { 
                             'apikey': ANON_KEY, 
-                            'Authorization': `Bearer ${ANON_KEY}`
+                            'Authorization': 'Bearer ' + ANON_KEY
                         }
                     });
                     
                     if (!response.ok) {
-                        console.warn(`Error en ${tableName}:`, response.status);
+                        console.warn('Error en ' + tableName + ':', response.status);
                         return [];
                     }
                     
                     const data = await response.json();
-                    return data.map(place => ({
-                        ...place,
-                        tipo: tableName,
-                        ...categoryConfig[tableName]
-                    }));
+                    return data.map(function(place) {
+                        return Object.assign({}, place, {
+                            tipo: tableName,
+                            emoji: categoryConfig[tableName].emoji,
+                            name: categoryConfig[tableName].name,
+                            color: categoryConfig[tableName].color
+                        });
+                    });
                 });
                 
                 const results = await Promise.all(promises);
                 allPlaces = results.flat();
                 
-                // Actualizar contadores
                 updateCounters();
-                
-                // Crear marcadores
                 createMarkers();
                 
-                // Ocultar loading
                 document.getElementById('loading').style.display = 'none';
                 
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('loading').innerHTML = `
-                    <div class="loading-content">
-                        <p style="color: red;">Error al cargar el mapa</p>
-                        <button onclick="location.reload()" class="popup-button">Reintentar</button>
-                    </div>
-                `;
+                document.getElementById('loading').innerHTML = 
+                    '<div class="loading-content">' +
+                    '<p style="color: red;">Error al cargar el mapa</p>' +
+                    '<button onclick="location.reload()" class="popup-button">Reintentar</button>' +
+                    '</div>';
             }
         }
-
+        
         // Actualizar contadores
         function updateCounters() {
-            const counts = {};
-            Object.keys(categoryConfig).forEach(cat => {
-                counts[cat] = allPlaces.filter(p => p.tipo === cat).length;
+            var counts = {};
+            Object.keys(categoryConfig).forEach(function(cat) {
+                counts[cat] = allPlaces.filter(function(p) { return p.tipo === cat; }).length;
             });
             
             document.getElementById('count-all').textContent = allPlaces.length;
@@ -645,146 +598,151 @@
             document.getElementById('total-count').textContent = allPlaces.length;
             document.getElementById('visible-count').textContent = allPlaces.length;
         }
-
+        
         // Crear marcadores
         function createMarkers() {
-            allPlaces.forEach(place => {
+            allPlaces.forEach(function(place) {
                 if (!place.latitud || !place.longitud) return;
                 
-                // Crear icono personalizado
-                const customIcon = L.divIcon({
-                    html: `<div style="
-                        background: white;
-                        border: 3px solid ${place.color};
-                        border-radius: 50%;
-                        width: 36px;
-                        height: 36px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 18px;
-                        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-                    ">${place.emoji}</div>`,
+                var customIcon = L.divIcon({
+                    html: '<div style="' +
+                        'background: white;' +
+                        'border: 3px solid ' + place.color + ';' +
+                        'border-radius: 50%;' +
+                        'width: 36px;' +
+                        'height: 36px;' +
+                        'display: flex;' +
+                        'align-items: center;' +
+                        'justify-content: center;' +
+                        'font-size: 18px;' +
+                        'box-shadow: 0 2px 5px rgba(0,0,0,0.3);' +
+                    '">' + place.emoji + '</div>',
                     iconSize: [36, 36],
                     iconAnchor: [18, 36],
                     popupAnchor: [0, -36],
                     className: 'custom-marker'
                 });
                 
-                // Crear marcador
-                const marker = L.marker([place.latitud, place.longitud], { icon: customIcon });
+                var marker = L.marker([place.latitud, place.longitud], { icon: customIcon });
                 
-                // Crear contenido del popup
-                const popupContent = `
-                    <div class="popup-content">
-                        <span class="popup-category">${place.emoji} ${place.name}</span>
-                        <h3 class="popup-title">${place.nombre || 'Sin nombre'}</h3>
-                        ${place.descripcion_corta ? 
-                          `<p class="popup-description">${place.descripcion_corta}</p>` : ''}
-                        ${place.direccion ? 
-                          `<p class="popup-address">📍 ${place.direccion}</p>` : ''}
-                        <button class="popup-button" onclick="openPlaceDetail('${place.id}', '${place.tipo}')">
-                            Ver detalles
-                        </button>
-                    </div>
-                `;
+                var popupContent = 
+                    '<div class="popup-content">' +
+                    '<span class="popup-category">' + place.emoji + ' ' + place.name + '</span>' +
+                    '<h3 class="popup-title">' + (place.nombre || 'Sin nombre') + '</h3>' +
+                    (place.descripcion_corta ? '<p class="popup-description">' + place.descripcion_corta + '</p>' : '') +
+                    (place.direccion ? '<p class="popup-address">📍 ' + place.direccion + '</p>' : '') +
+                    '<button class="popup-button" onclick="openPlaceDetail(\'' + place.id + '\', \'' + place.tipo + '\')">' +
+                    'Ver detalles</button></div>';
                 
                 marker.bindPopup(popupContent, { 
                     className: 'custom-popup',
                     maxWidth: 300
                 });
                 
-                // Agregar al grupo correspondiente
                 marker.addTo(markerGroups[place.tipo]);
-                
-                // Guardar referencia
                 marker.placeData = place;
                 allMarkers.push(marker);
             });
         }
-
+        
         // Toggle panel de filtros
         function toggleFilterPanel() {
-            const panel = document.getElementById('filterPanel');
-            const isCollapsed = panel.classList.contains('collapsed');
+            var panel = document.getElementById('filterPanel');
+            var isCollapsed = panel.classList.contains('collapsed');
             
             if (isCollapsed) {
-                // Al abrir, copiar estado actual a temporal
-                Object.keys(categoryConfig).forEach(cat => {
-                    tempFilters[cat] = activeFilters[cat] !== false;
-                    document.getElementById(`filter-${cat}`).checked = tempFilters[cat];
+                // Al abrir, sincronizar checkboxes con estado activo
+                Object.keys(categoryConfig).forEach(function(cat) {
+                    var isActive = activeFilters[cat] !== false;
+                    document.getElementById('filter-' + cat).checked = isActive;
+                    tempFilters[cat] = isActive;
                 });
                 updateAllCheckbox();
             }
             
             panel.classList.toggle('collapsed');
         }
-
-        // Toggle filtro individual (sin aplicar inmediatamente)
-        function toggleFilter(type) {
-            if (type === 'all') {
-                const newState = !document.getElementById('filter-all').checked;
-                document.getElementById('filter-all').checked = newState;
-                Object.keys(categoryConfig).forEach(cat => {
-                    tempFilters[cat] = newState;
-                    document.getElementById(`filter-${cat}`).checked = newState;
-                });
-            } else {
-                const checkbox = document.getElementById(`filter-${type}`);
-                checkbox.checked = !checkbox.checked;
-                tempFilters[type] = checkbox.checked;
-                updateAllCheckbox();
-            }
+        
+        // Toggle todos los filtros
+        function toggleFilterAll() {
+            var allCheckbox = document.getElementById('filter-all');
+            var newState = allCheckbox.checked;
+            
+            Object.keys(categoryConfig).forEach(function(cat) {
+                document.getElementById('filter-' + cat).checked = newState;
+                tempFilters[cat] = newState;
+            });
+        }
+        
+        // Actualizar filtro temporal individual
+        function updateTempFilter(type) {
+            var checkbox = document.getElementById('filter-' + type);
+            tempFilters[type] = checkbox.checked;
+            updateAllCheckbox();
         }
         
         // Actualizar checkbox "todos"
         function updateAllCheckbox() {
-            const allChecked = Object.keys(categoryConfig).every(cat => 
-                document.getElementById(`filter-${cat}`).checked
-            );
+            var allChecked = Object.keys(categoryConfig).every(function(cat) {
+                return document.getElementById('filter-' + cat).checked;
+            });
             document.getElementById('filter-all').checked = allChecked;
         }
-
+        
         // Aplicar filtros
         function applyFilter() {
-            activeFilters = {...tempFilters};
+            // Copiar filtros temporales a activos
+            Object.keys(categoryConfig).forEach(function(cat) {
+                activeFilters[cat] = tempFilters[cat];
+            });
+            
             filterMarkers();
             toggleFilterPanel();
         }
         
         // Cancelar cambios
         function cancelFilter() {
-            tempFilters = {...activeFilters};
+            // Restaurar checkboxes al estado activo
+            Object.keys(categoryConfig).forEach(function(cat) {
+                tempFilters[cat] = activeFilters[cat] !== false;
+            });
             toggleFilterPanel();
         }
-
-        // Filtrar marcadores
+        
+        // Filtrar marcadores en el mapa
         function filterMarkers() {
-            let visibleCount = 0;
+            var visibleCount = 0;
             
-            Object.keys(categoryConfig).forEach(cat => {
-                if (activeFilters[cat] !== false) {
-                    map.addLayer(markerGroups[cat]);
-                    visibleCount += allPlaces.filter(p => p.tipo === cat).length;
+            Object.keys(categoryConfig).forEach(function(cat) {
+                var isActive = activeFilters[cat] !== false;
+                
+                if (isActive) {
+                    // Mostrar este grupo
+                    if (!map.hasLayer(markerGroups[cat])) {
+                        map.addLayer(markerGroups[cat]);
+                    }
+                    visibleCount += allPlaces.filter(function(p) { return p.tipo === cat; }).length;
                 } else {
-                    map.removeLayer(markerGroups[cat]);
+                    // Ocultar este grupo
+                    if (map.hasLayer(markerGroups[cat])) {
+                        map.removeLayer(markerGroups[cat]);
+                    }
                 }
             });
             
-            // Actualizar contador
             document.getElementById('visible-count').textContent = visibleCount;
         }
-
+        
         // Abrir detalle del lugar
         function openPlaceDetail(id, tipo) {
-            window.location.href = `place.html?tipo=${tipo}&id=${id}&corredor=${corridorSlug}`;
+            window.location.href = 'place.html?tipo=' + tipo + '&id=' + id + '&corredor=' + corridorSlug;
         }
-
+        
         // Volver
         function goBack() {
-            window.location.href = `corredor.html?corredor=${corridorSlug}`;
+            window.location.href = 'corredor.html?corredor=' + corridorSlug;
         }
-
+        
         // Pantalla completa
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
@@ -795,18 +753,11 @@
                 }
             }
         }
-
-        // Prevenir propagación de click en checkbox
-        document.querySelectorAll('.filter-option input').forEach(input => {
-            input.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-        });
-
+        
         // Inicializar
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function() {
             // Inicializar todos los filtros como activos
-            Object.keys(categoryConfig).forEach(cat => {
+            Object.keys(categoryConfig).forEach(function(cat) {
                 activeFilters[cat] = true;
                 tempFilters[cat] = true;
             });
