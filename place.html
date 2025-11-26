@@ -313,6 +313,9 @@
         const SUPABASE_URL = 'https://ksiiidnvtktlowlhtebs.supabase.co';
         const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzaWlpZG52dGt0bG93bGh0ZWJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4MTIxMzMsImV4cCI6MjA3NjM4ODEzM30.aNctRZSRaINDV4ehb00848g4Y-70UeFviNbsmS8jQUw';
 
+        // Uber Client ID oficial
+        const UBER_CLIENT_ID = 'ibe3VxLl2Sm1Dd6HaHQJ6fCcBgzcvCzB';
+
         // Mapeo de corredores
         const corridorNames = {
             'zona-rosa': 'Zona Rosa',
@@ -400,34 +403,22 @@
             }
         }
 
-        // Abrir Uber con destino predefinido
-        function openUber(lat, lng, placeName) {
-            // Codificar el nombre del lugar
+        // Abrir Uber con destino predefinido (versión SDK con Client ID)
+        function openUber(lat, lng, placeName, direccion) {
             var encodedName = encodeURIComponent(placeName);
+            var encodedAddress = encodeURIComponent(direccion || placeName);
             
-            // URL para la app de Uber (deep link)
-            var uberApp = 'uber://?action=setPickup&pickup=my_location&dropoff[latitude]=' + lat + '&dropoff[longitude]=' + lng + '&dropoff[nickname]=' + encodedName;
+            // Universal Link con Client ID (tracking + mejor experiencia)
+            var uberUrl = 'https://m.uber.com/ul/?action=setPickup' +
+                '&client_id=' + UBER_CLIENT_ID +
+                '&pickup=my_location' +
+                '&dropoff[latitude]=' + lat +
+                '&dropoff[longitude]=' + lng +
+                '&dropoff[nickname]=' + encodedName +
+                '&dropoff[formatted_address]=' + encodedAddress;
             
-            // URL fallback para web móvil de Uber
-            var uberWeb = 'https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[latitude]=' + lat + '&dropoff[longitude]=' + lng + '&dropoff[nickname]=' + encodedName;
-            
-            // Detectar si es iOS o Android para mejor experiencia
-            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            var isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-            var isAndroid = /android/i.test(userAgent);
-            
-            if (isIOS || isAndroid) {
-                // En móvil, intentar abrir la app primero
-                window.location.href = uberApp;
-                
-                // Si no se abre la app en 2 segundos, ir a la web
-                setTimeout(function() {
-                    window.location.href = uberWeb;
-                }, 2000);
-            } else {
-                // En desktop, ir directo a la web
-                window.open(uberWeb, '_blank');
-            }
+            // Abrir - el Universal Link maneja automáticamente app vs web
+            window.location.href = uberUrl;
         }
 
         // Mostrar detalles del lugar
@@ -439,6 +430,9 @@
             // Generar descripción si no existe
             var descripcion = place.descripcion_corta || place.descripcion || 
                 categoryName + ' ubicado en ' + corridorNames[params.corredor] + '. Un lugar destacado para visitar durante tu estadía en la Ciudad de México.';
+
+            // Limpiar dirección para usar en JavaScript
+            var direccionLimpia = (place.direccion || '').replace(/'/g, "\\'").replace(/"/g, '\\"');
 
             var html = '<div class="container">' +
                 '<!-- Imagen Principal -->' +
@@ -516,8 +510,8 @@
                     '<span>Cómo llegar</span>' +
                     '</a>';
                 
-                // Botón Uber
-                html += '<button onclick="openUber(' + place.latitud + ', ' + place.longitud + ', \'' + place.nombre.replace(/'/g, "\\'") + '\')" class="action-button uber">' +
+                // Botón Uber con Client ID y dirección
+                html += '<button onclick="openUber(' + place.latitud + ', ' + place.longitud + ', \'' + place.nombre.replace(/'/g, "\\'") + '\', \'' + direccionLimpia + '\')" class="action-button uber">' +
                     '<span class="uber-logo">UBER</span>' +
                     '<span>Pedir Uber</span>' +
                     '</button>';
