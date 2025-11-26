@@ -180,18 +180,20 @@
         /* Botones de Acción */
         .action-buttons {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .action-button {
             flex: 1;
+            min-width: 140px;
             background: #006847;
             color: white;
             border: none;
             padding: 15px 20px;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 500;
             cursor: pointer;
             display: flex;
@@ -216,6 +218,23 @@
 
         .action-button.secondary:hover {
             background: #f0f8f5;
+        }
+
+        /* Botón de Uber */
+        .action-button.uber {
+            background: #000;
+            color: white;
+        }
+
+        .action-button.uber:hover {
+            background: #333;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .uber-logo {
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: -0.5px;
         }
 
         /* Loading State */
@@ -262,6 +281,10 @@
 
             .action-buttons {
                 flex-direction: column;
+            }
+            
+            .action-button {
+                min-width: 100%;
             }
         }
     </style>
@@ -343,16 +366,16 @@
 
             // Actualizar navegación
             const corridorName = corridorNames[params.corredor] || params.corredor;
-            document.getElementById('navTitle').textContent = corridorName ? `${corridorName} - Detalle` : 'Detalle del Lugar';
+            document.getElementById('navTitle').textContent = corridorName ? corridorName + ' - Detalle' : 'Detalle del Lugar';
 
             try {
                 // Hacer fetch a la tabla correspondiente
                 const response = await fetch(
-                    `${SUPABASE_URL}/rest/v1/${params.tipo}?id=eq.${params.id}`,
+                    SUPABASE_URL + '/rest/v1/' + params.tipo + '?id=eq.' + params.id,
                     {
                         headers: {
                             'apikey': ANON_KEY,
-                            'Authorization': `Bearer ${ANON_KEY}`
+                            'Authorization': 'Bearer ' + ANON_KEY
                         }
                     }
                 );
@@ -377,103 +400,145 @@
             }
         }
 
+        // Abrir Uber con destino predefinido
+        function openUber(lat, lng, placeName) {
+            // Codificar el nombre del lugar
+            var encodedName = encodeURIComponent(placeName);
+            
+            // URL para la app de Uber (deep link)
+            var uberApp = 'uber://?action=setPickup&pickup=my_location&dropoff[latitude]=' + lat + '&dropoff[longitude]=' + lng + '&dropoff[nickname]=' + encodedName;
+            
+            // URL fallback para web móvil de Uber
+            var uberWeb = 'https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[latitude]=' + lat + '&dropoff[longitude]=' + lng + '&dropoff[nickname]=' + encodedName;
+            
+            // Detectar si es iOS o Android para mejor experiencia
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            var isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+            var isAndroid = /android/i.test(userAgent);
+            
+            if (isIOS || isAndroid) {
+                // En móvil, intentar abrir la app primero
+                window.location.href = uberApp;
+                
+                // Si no se abre la app en 2 segundos, ir a la web
+                setTimeout(function() {
+                    window.location.href = uberWeb;
+                }, 2000);
+            } else {
+                // En desktop, ir directo a la web
+                window.open(uberWeb, '_blank');
+            }
+        }
+
         // Mostrar detalles del lugar
         function displayPlaceDetails(place, tipo) {
-            const emoji = categoryEmojis[tipo] || '📍';
-            const categoryName = categoryNames[tipo] || tipo;
-            const params = getQueryParams();
+            var emoji = categoryEmojis[tipo] || '📍';
+            var categoryName = categoryNames[tipo] || tipo;
+            var params = getQueryParams();
             
             // Generar descripción si no existe
-            const descripcion = place.descripcion_corta || place.descripcion || 
-                               `${categoryName} ubicado en ${corridorNames[params.corredor]}. Un lugar destacado para visitar durante tu estadía en la Ciudad de México.`;
+            var descripcion = place.descripcion_corta || place.descripcion || 
+                categoryName + ' ubicado en ' + corridorNames[params.corredor] + '. Un lugar destacado para visitar durante tu estadía en la Ciudad de México.';
 
-            const html = `
-                <div class="container">
-                    <!-- Imagen Principal -->
-                    <div class="main-image-container">
-                        <div class="main-image">
-                            ${place.imagen_principal_url ? 
-                              `<img src="${place.imagen_principal_url}" alt="${place.nombre}">` : 
-                              emoji}
-                        </div>
-                    </div>
+            var html = '<div class="container">' +
+                '<!-- Imagen Principal -->' +
+                '<div class="main-image-container">' +
+                '<div class="main-image">' +
+                (place.imagen_principal_url ? 
+                    '<img src="' + place.imagen_principal_url + '" alt="' + place.nombre + '">' : 
+                    emoji) +
+                '</div>' +
+                '</div>' +
 
-                    <!-- Info Card -->
-                    <div class="info-card">
-                        <h2 class="place-name">${place.nombre}</h2>
-                        <span class="category-badge">${emoji} ${categoryName}</span>
-                        
-                        <p class="description">${descripcion}</p>
-                        
-                        <div class="info-row">
-                            <div class="info-icon">📍</div>
-                            <div class="info-text">
-                                <strong>Dirección:</strong><br>
-                                ${place.direccion || 'Dirección no disponible'}
-                            </div>
-                        </div>
+                '<!-- Info Card -->' +
+                '<div class="info-card">' +
+                '<h2 class="place-name">' + place.nombre + '</h2>' +
+                '<span class="category-badge">' + emoji + ' ' + categoryName + '</span>' +
+                
+                '<p class="description">' + descripcion + '</p>' +
+                
+                '<div class="info-row">' +
+                '<div class="info-icon">📍</div>' +
+                '<div class="info-text">' +
+                '<strong>Dirección:</strong><br>' +
+                (place.direccion || 'Dirección no disponible') +
+                '</div>' +
+                '</div>';
 
-                        ${place.capacidad ? `
-                        <div class="info-row">
-                            <div class="info-icon">🚲</div>
-                            <div class="info-text">
-                                <strong>Capacidad:</strong> ${place.capacidad} bicicletas
-                            </div>
-                        </div>
-                        ` : ''}
+            if (place.capacidad) {
+                html += '<div class="info-row">' +
+                    '<div class="info-icon">🚲</div>' +
+                    '<div class="info-text">' +
+                    '<strong>Capacidad:</strong> ' + place.capacidad + ' bicicletas' +
+                    '</div>' +
+                    '</div>';
+            }
 
-                        ${place.telefono ? `
-                        <div class="info-row">
-                            <div class="info-icon">📞</div>
-                            <div class="info-text">
-                                <strong>Teléfono:</strong> ${place.telefono}
-                            </div>
-                        </div>
-                        ` : ''}
+            if (place.telefono) {
+                html += '<div class="info-row">' +
+                    '<div class="info-icon">📞</div>' +
+                    '<div class="info-text">' +
+                    '<strong>Teléfono:</strong> ' + place.telefono +
+                    '</div>' +
+                    '</div>';
+            }
 
-                        ${place.horario ? `
-                        <div class="info-row">
-                            <div class="info-icon">🕐</div>
-                            <div class="info-text">
-                                <strong>Horario:</strong> ${place.horario}
-                            </div>
-                        </div>
-                        ` : ''}
-                    </div>
+            if (place.horario) {
+                html += '<div class="info-row">' +
+                    '<div class="info-icon">🕐</div>' +
+                    '<div class="info-text">' +
+                    '<strong>Horario:</strong> ' + place.horario +
+                    '</div>' +
+                    '</div>';
+            }
 
-                    <!-- Mapa -->
-                    ${place.latitud && place.longitud ? `
-                    <div class="map-container">
-                        <div class="map-header">
-                            <h3>📍 Ubicación</h3>
-                        </div>
-                        <div id="map"></div>
-                    </div>
-                    ` : ''}
+            html += '</div>'; // Cerrar info-card
 
-                    <!-- Botones de Acción -->
-                    <div class="action-buttons">
-                        ${place.latitud && place.longitud ? `
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=${place.latitud},${place.longitud}" 
-                           target="_blank" 
-                           class="action-button">
-                            <span>🗺️</span>
-                            <span>Cómo llegar</span>
-                        </a>
-                        ` : ''}
-                        <button onclick="goBack()" class="action-button secondary">
-                            <span>←</span>
-                            <span>Volver a la lista</span>
-                        </button>
-                    </div>
-                </div>
-            `;
+            // Mapa
+            if (place.latitud && place.longitud) {
+                html += '<div class="map-container">' +
+                    '<div class="map-header">' +
+                    '<h3>📍 Ubicación</h3>' +
+                    '</div>' +
+                    '<div id="map"></div>' +
+                    '</div>';
+            }
+
+            // Botones de Acción
+            html += '<div class="action-buttons">';
+            
+            if (place.latitud && place.longitud) {
+                // Botón Google Maps
+                html += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + place.latitud + ',' + place.longitud + '" ' +
+                    'target="_blank" ' +
+                    'class="action-button">' +
+                    '<span>🗺️</span>' +
+                    '<span>Cómo llegar</span>' +
+                    '</a>';
+                
+                // Botón Uber
+                html += '<button onclick="openUber(' + place.latitud + ', ' + place.longitud + ', \'' + place.nombre.replace(/'/g, "\\'") + '\')" class="action-button uber">' +
+                    '<span class="uber-logo">UBER</span>' +
+                    '<span>Pedir Uber</span>' +
+                    '</button>';
+            }
+            
+            // Botón Volver
+            html += '<button onclick="goBack()" class="action-button secondary">' +
+                '<span>←</span>' +
+                '<span>Volver</span>' +
+                '</button>';
+            
+            html += '</div>'; // Cerrar action-buttons
+            html += '</div>'; // Cerrar container
 
             document.getElementById('content').innerHTML = html;
 
             // Inicializar mapa si hay coordenadas
             if (place.latitud && place.longitud) {
-                setTimeout(() => initMap(place.latitud, place.longitud, place.nombre, emoji), 100);
+                setTimeout(function() {
+                    initMap(place.latitud, place.longitud, place.nombre, emoji);
+                }, 100);
             }
         }
 
@@ -488,19 +553,19 @@
             }).addTo(map);
 
             // Crear un icono personalizado con el emoji
-            const customIcon = L.divIcon({
-                html: `<div style="
-                    background: white;
-                    border: 3px solid #006847;
-                    border-radius: 50%;
-                    width: 40px;
-                    height: 40px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 20px;
-                    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-                ">${emoji}</div>`,
+            var customIcon = L.divIcon({
+                html: '<div style="' +
+                    'background: white;' +
+                    'border: 3px solid #006847;' +
+                    'border-radius: 50%;' +
+                    'width: 40px;' +
+                    'height: 40px;' +
+                    'display: flex;' +
+                    'align-items: center;' +
+                    'justify-content: center;' +
+                    'font-size: 20px;' +
+                    'box-shadow: 0 2px 5px rgba(0,0,0,0.3);' +
+                '">' + emoji + '</div>',
                 iconSize: [40, 40],
                 iconAnchor: [20, 40],
                 popupAnchor: [0, -40],
@@ -510,16 +575,16 @@
             // Agregar marcador
             L.marker([lat, lng], { icon: customIcon })
                 .addTo(map)
-                .bindPopup(`<b>${nombre}</b>`)
+                .bindPopup('<b>' + nombre + '</b>')
                 .openPopup();
         }
 
         // Función para volver
         function goBack() {
-            const params = getQueryParams();
+            var params = getQueryParams();
             if (params.corredor) {
                 // Volver al corredor
-                window.location.href = `corredor.html?corredor=${params.corredor}`;
+                window.location.href = 'corredor.html?corredor=' + params.corredor;
             } else {
                 // Volver a la página principal
                 window.location.href = 'index.html';
@@ -528,22 +593,21 @@
 
         // Mostrar error
         function showError(message) {
-            document.getElementById('content').innerHTML = `
-                <div class="container">
-                    <div class="error-message">
-                        <h3>⚠️ Error</h3>
-                        <p>${message}</p>
-                        <br>
-                        <button onclick="goBack()" class="action-button">
-                            Volver
-                        </button>
-                    </div>
-                </div>
-            `;
+            document.getElementById('content').innerHTML = 
+                '<div class="container">' +
+                '<div class="error-message">' +
+                '<h3>⚠️ Error</h3>' +
+                '<p>' + message + '</p>' +
+                '<br>' +
+                '<button onclick="goBack()" class="action-button">' +
+                'Volver' +
+                '</button>' +
+                '</div>' +
+                '</div>';
         }
 
         // Cargar datos al iniciar
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function() {
             loadPlaceData();
         });
     </script>
